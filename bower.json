@@ -1,0 +1,22 @@
+{
+  "name": "testWebsockets",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Wouterbeets/testWebsockets",
+  "authors": [
+    "Wouter Beets <beetswouter@gmail.com>"
+  ],
+  "keywords": [
+    "websockets"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  }
+}

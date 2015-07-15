@@ -1,6 +1,8 @@
 package main
 
 import (
+	"code.google.com/p/go.net/websocket"
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"net/http"
@@ -8,7 +10,7 @@ import (
 )
 
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
-var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
+var templates = template.Must(template.ParseFiles("src/edit.html", "src/view.html"))
 
 type Page struct {
 	Title string
@@ -28,12 +30,13 @@ func loadPage(title string) (*Page, error) {
 	}
 	return &Page{Title: title, Body: body}, nil
 }
+
 func editHandler(w http.ResponseWriter, r *http.Request, title string) {
 	p, err := loadPage(title)
 	if err != nil {
 		p = &Page{Title: title}
 	}
-	renderTemplate(w, "edit", p)
+	renderTemplate(w, "edit.html", p)
 }
 
 func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
@@ -52,11 +55,11 @@ func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
 		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
 		return
 	}
-	renderTemplate(w, "view", p)
+	renderTemplate(w, "view.html", p)
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-	err := templates.ExecuteTemplate(w, tmpl+".html", p)
+	err := templates.ExecuteTemplate(w, tmpl, p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -74,9 +77,53 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 	}
 }
 
+func Sock(ws *websocket.Conn) {
+	var err error
+
+	for {
+		var reply string
+
+		if err = websocket.Message.Receive(ws, &reply); err != nil {
+			fmt.Println("Can't receive")
+			break
+		}
+		msg := "Received:  " + reply
+		if reply == "give me tasks" {
+			msg = `task of the day, code!!`
+			if err = websocket.Message.Send(ws, msg); err != nil {
+				fmt.Println("Can't send")
+				break
+			}
+		} else {
+			fmt.Println("Received back from client: " + reply)
+
+			fmt.Println("Sending to client: " + msg)
+
+			if err = websocket.Message.Send(ws, msg); err != nil {
+				fmt.Println("Can't send")
+				break
+			}
+		}
+	}
+}
+
+func staticHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.URL.Path)
+	filename := r.URL.Path[1:]
+	fmt.Println(filename)
+	file, err := ioutil.ReadFile(filename)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, "%s", file)
+}
+
 func main() {
 	http.HandleFunc("/view/", makeHandler(viewHandler))
 	http.HandleFunc("/save/", makeHandler(saveHandler))
 	http.HandleFunc("/edit/", makeHandler(editHandler))
+	http.HandleFunc("/", staticHandler)
+	http.Handle("/ws", websocket.Handler(Sock))
 	http.ListenAndServe(":8080", nil)
 }

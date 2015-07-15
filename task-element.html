@@ -1,0 +1,21 @@
+<link rel="import"
+      href="bower_components/polymer/polymer.html">
+<dom-module id="task-element">
+	<style>
+		p {
+			background-color : #ccc
+		}
+	</style>
+	<template>
+	<p>task = <span>{{task}}</span></p>
+	</template>
+	<script>
+		Polymer({
+			is: "task-element",
+			ready: function() {
+				this.task = " code ";
+				console.log("foo");
+			}
+		});
+	</script>
+</dom-module>
