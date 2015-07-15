@@ -108,9 +108,7 @@ func Sock(ws *websocket.Conn) {
 }
 
 func staticHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.URL.Path)
 	filename := r.URL.Path[1:]
-	fmt.Println(filename)
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

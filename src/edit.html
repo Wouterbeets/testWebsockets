@@ -4,6 +4,7 @@
 <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="/proto-element.html">
     <link rel="import" href="/task-element.html">
+    <link rel="import" href="/task-container.html">
 <script type="text/javascript">
         var sock = null;
         var wsuri = "ws://127.0.0.1:8080/ws";
@@ -61,11 +62,10 @@
       <a class="mdl-navigation__link" href="">Link</a>
     </nav>
   </div>
-
 	<main class="mdl-layout__content">
-
- <proto-element></proto-element>
+	<proto-element></proto-element>
 	<task-element onclick='send("test")'></task-element>
+	<task-container></task-container>
 	<div class="mdl-card mdl-shadow--2dp demo-card-wide">
 		<div class="mdl-card__supporting-text">
 			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -80,8 +80,6 @@
 			</button>
 		</div>
 	</div>
-
-
 	<div class="page-content"><!-- Your content goes here --></div>
 	</main>
 </div>

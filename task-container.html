@@ -1,0 +1,34 @@
+<link rel="import"
+      href="bower_components/polymer/polymer.html">
+<link rel="import" href="task-element.html">
+
+<dom-module id="task-container">
+	<style>
+		p {
+			background-color : #ccc
+		}
+	</style>
+	<template>
+		<button onclick='newTask'>new task</button>
+	</template>
+	<script>
+		Polymer({
+			is: "task-container",
+
+			ready: function() {
+				console.log("task container ready");
+			},
+
+			properties: {
+				numTasks: {
+					type: Number
+				}
+			},
+
+			newTask: function() {
+					var nt = document.createElement('task-element');
+					Polymer.dom(this).appendChild(nt);
+			}
+		});
+	</script>
+</dom-module>
