@@ -7,16 +7,17 @@
 		}
 	</style>
 	<template>
-		<p>task = <span>{{task}}</span></p>
+		<p id='t'>task = <span>{{task}}</span></p>
 	</template>
 	<script>
-		Polymer({
+		taskElement = Polymer({
 			is: "task-element",
 
 
 			properties: {
-				taskId: Number,
-				taskString: {
+				taskid: Number,
+				name: String,
+				taskstring: {
 					type: String,
 					value: 'click to write task',
 					observer: '_changed_string'
@@ -25,11 +26,9 @@
 
 			ready: function() {
 				this.task = " code ";
-				alert("foo");
-			}
-
+				this.$.t.textContent = "foo";
+			},
 			_changed_string: function(newVal, oldVal) {
-				alert("ahhhhhhhhh new val")
 			}
 		});
 	</script>
