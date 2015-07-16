@@ -79,7 +79,6 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 
 func Sock(ws *websocket.Conn) {
 	var err error
-
 	for {
 		var reply string
 

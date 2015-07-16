@@ -26,9 +26,11 @@
 
 			ready: function() {
 				this.task = " code ";
-				this.$.t.textContent = "foo";
+				this.$.t.textContent = this.taskstring;
 			},
 			_changed_string: function(newVal, oldVal) {
+				console.log(newVal, oldVal);
+				
 			}
 		});
 	</script>

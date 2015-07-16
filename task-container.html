@@ -25,14 +25,49 @@
 			},
 
 			ready: function() {
+
+				console.log("onload");
+
+        var wsuri = "ws://127.0.0.1:8080/ws";
+				this.sock = new WebSocket(wsuri);
+
+				this.sock.onopen = function() {
+					console.log("connected to " + wsuri);
+					this.send("give me tasks")
+				}
+
+				this.sock.onclose = function(e) {
+					console.log("connection closed (" + e.code + ")");
+				}
+
+				this.sock.onmessage = function(e) {
+					console.log("message received: " + e.data);
+
+				}
+
 				console.log("task container ready");
+			},
+
+			send: function (msg) {
+				this.sock.send(msg);
+			},
+
+			parseTask: function(msg) {
+				/*cut string into : 
+						-taskid
+						-taskname
+						-taskdes
+
+						or use JSON.Parse(msg)
+					*/
 			},
 
 			properties: {
 				numtasks: {
 					type: Number,
 					value: "0"
-				}
+				},
+				sock: Object
 			}
 
 		});

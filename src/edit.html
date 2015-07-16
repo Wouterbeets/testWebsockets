@@ -6,80 +6,16 @@
     <link rel="import" href="/task-element.html">
     <link rel="import" href="/task-container.html">
 <script type="text/javascript">
-        var sock = null;
-        var wsuri = "ws://127.0.0.1:8080/ws";
 
         window.onload = function() {
 
-            console.log("onload");
+				};
 
-            sock = new WebSocket(wsuri);
-
-            sock.onopen = function() {
-                console.log("connected to " + wsuri);
-								send("give me tasks")
-            }
-
-            sock.onclose = function(e) {
-                console.log("connection closed (" + e.code + ")");
-            }
-
-            sock.onmessage = function(e) {
-							document.getElementById("task0").value = e.data;
-							console.log("message received: " + e.data);
-            }
-        };
-
-        function send(msg) {
-            sock.send(msg);
-        };
     </script>
 <!-- Always shows a header, even in smaller screens. -->
 </head>
 <body>
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-      <!-- Title -->
-      <span class="mdl-layout-title">Editing {{.Title}}</span>
-      <!-- Add spacer, to align navigation to the right -->
-      <div class="mdl-layout-spacer"></div>
-      <!-- Navigation. We hide it in small screens. -->
-      <nav class="mdl-navigation mdl-layout--large-screen-only">
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-      </nav>
-    </div>
-  </header>
-  <div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">Title</span>
-    <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href="">Link</a>
-      <a class="mdl-navigation__link" href="">Link</a>
-      <a class="mdl-navigation__link" href="">Link</a>
-      <a class="mdl-navigation__link" href="">Link</a>
-    </nav>
-  </div>
-	<main class="mdl-layout__content">
-	<task-container></task-container>
-	<div class="mdl-card mdl-shadow--2dp demo-card-wide">
-		<div class="mdl-card__supporting-text">
-			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				<input class="mdl-textfield__input" type="text" id="task0" onchange="send(document.getElementById('task0').value)" />
-            
-				<label class="mdl-textfield__label" for="task0">Task</label>
-			</div>
-		</div>
-		<div class="mdl-card__menu">
-			<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-				<i class="material-icons">share</i>
-			</button>
-		</div>
-	</div>
-	<div class="page-content"><!-- Your content goes here --></div>
-	</main>
+	<task-container id='tc' sock="sock"></task-container>
 </div>
 </body>
 </html>
